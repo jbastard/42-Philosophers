@@ -36,7 +36,6 @@ struct s_data {
 	int				time_to_die;
 	int				time_to_eat;
 	int				time_to_sleep;
-	pthread_mutex_t mutester;
 	t_philo			*philos;
 };
 
@@ -46,6 +45,7 @@ struct s_philo {
 	int				last_meal;
 	pthread_t		thread;
 	pthread_mutex_t	left_fork;
+	t_data			*data;
 };
 
 //UTILS
