@@ -6,7 +6,7 @@
 /*   By: jbastard <jbastard@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 09:35:08 by jbastard          #+#    #+#             */
-/*   Updated: 2025/03/21 10:01:46 by jbastard         ###   ########.fr       */
+/*   Updated: 2025/03/22 12:38:09 by jbastard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,31 @@
 # include <sys/time.h>
 # include <pthread.h>
 
-typedef struct s_data d_data
+# define ERR_MALLOC "Error: Memory allocation failed"
+# define ERR_ARGS_COUNT "Error: Wrong number of arguments"
+# define ERR_ARGS_TYPE "Error: Invalid arguments\n\
+Usage: ./philosophers number_of_philosophers \
+time_to_die time_to_eat time_to_sleep \
+[number_of_times_each_philosopher_must_eat]"
+
+typedef struct s_data t_data;
+typedef struct s_philo t_philo;
 
 struct s_data {
+	int				philo_count;
+	int				meals_count;
+	int				time_to_die;
+	int				time_to_eat;
+	int				time_to_sleep;
+	s_philo			*philos;
+};
 
+struct s_philo {
+	int				id;
+	int				meals;
+	int				last_meal;
+	pthread_t		thread;
+	pthread_mutex_t	left_fork;
 };
 
 #endif
