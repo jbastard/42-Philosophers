@@ -6,54 +6,22 @@
 /*   By: jbastard <jbastard@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 09:35:08 by jbastard          #+#    #+#             */
-/*   Updated: 2025/03/22 12:35:21 by jbastard         ###   ########.fr       */
+/*   Updated: 2025/03/23 16:26:21 by jbastard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philosophers.h"
 
-int is_digit(int c)
+void *routine(void *arg)
 {
-	return (c >= '0' && c <= '9');
+	int test = *(int *)arg;
+	(void)test;
+
+	printf("%s\n", "Hello from thread");
+	usleep(500000);
+	return NULL;
 }
 
-int ft_atoi(char *str)
-{
-	int res;
-	int i;
-	int sign;
-
-	i = 0;
-	sign = 1;
-	if (str[i] == '-')
-	{
-		sign = -1;
-		i++;
-	}
-	while (str[i])
-	{
-		res = res * 10 + str[i] - '0';
-		i++;
-	}
-	return (res * sign);
-}
-
-int is_numeric_args(char **av)
-{
-	int i;
-	int j;
-
-	i = 0;
-	while (av[i])
-	{
-		j = 0;
-		while (av[i][j])
-			if (!is_digit(av[i][j++]))
-				return (0);
-		i++;
-	}
-	return (1);
-}
 
 int init_philosophers(t_data *data)
 {
@@ -68,8 +36,8 @@ int init_philosophers(t_data *data)
 		data->philos[i].id = i;
 		data->philos[i].meals = 0;
 		data->philos[i].last_meal = 0;
+		pthread_create(&data->philos[i].thread, NULL, routine, data);
 		i++;
-// init thread mais quand j aurais compris comment ca marche
 	}
 	return (1);
 }
@@ -86,8 +54,6 @@ int init_data(t_data *data, char **av)
 		data->meals_count = ft_atoi(av[5]);
 	else
 		data->meals_count = -1;
-	if (!init_philosophers(data))
-		return (0);
 	return (1);
 }
 
@@ -99,5 +65,7 @@ int main(int ac, char **av)
 		return (printf("%s\n", ERR_ARGS_COUNT));
 	if (!init_data(&data, av))
 		return (0);
-	return (0);
+	if (!init_philosophers(&data))
+		return (0);
+	return (1);
 }

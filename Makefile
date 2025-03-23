@@ -20,6 +20,7 @@ UTILS_DIR		=	utils/
 
 #SRCS FILES
 C_FILES			=	philosophers.c \
+					$(UTILS_DIR)libft_utils.c \
 
 SRC				=	$(addprefix $(SRC_DIR), $(C_FILES))
 OBJS			=	$(patsubst $(SRC_DIR)%.c, $(OBJS_DIR)%.o, $(SRC))
