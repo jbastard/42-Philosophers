@@ -6,7 +6,7 @@
 /*   By: jbastard <jbastard@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 09:35:08 by jbastard          #+#    #+#             */
-/*   Updated: 2025/03/23 15:47:31 by jbastard         ###   ########.fr       */
+/*   Updated: 2025/03/23 17:32:31 by jbastard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ struct s_data {
 	int				time_to_die;
 	int				time_to_eat;
 	int				time_to_sleep;
+	pthread_mutex_t mutester;
 	t_philo			*philos;
 };
 
@@ -47,8 +48,13 @@ struct s_philo {
 	pthread_mutex_t	left_fork;
 };
 
+//UTILS
 int is_digit(int c);
 int ft_atoi(char *str);
 int is_numeric_args(char **av);
+int get_time_in_ms(void);
+
+//ALL_KINDS_OF_FREE
+void	free_philos(t_data *data);
 
 #endif
