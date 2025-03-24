@@ -1,24 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philosophers.c                                     :+:      :+:    :+:   */
+/*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jbastard <jbastard@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/21 09:35:08 by jbastard          #+#    #+#             */
-/*   Updated: 2025/03/23 17:35:43 by jbastard         ###   ########.fr       */
+/*   Created: 2025/03/24 11:50:39 by jbastard          #+#    #+#             */
+/*   Updated: 2025/03/24 12:18:49 by jbastard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/philosophers.h"
+#include "../../includes/philosophers.h"
 
-void *routine(void *r_philo)
+void init_philo_forks(t_data *data)
 {
-	t_philo *philo = (t_philo *)r_philo;
-	for (int i = 0; i < 200000; ++i) {
-		philo->data->meals_count++;
+	int i;
+
+	i = 0;
+	while (i < data->philo_count)
+	{
+		data->philos[i].r_fork = &data->forks[(i + 1) % data->philo_count];
+		i++;
 	}
-	return (NULL);
+}
+
+void	init_forks(t_data *data)
+{
+	int i;
+
+	i = 0;
+	data->forks = malloc(sizeof(pthread_mutex_t) * data->philo_count);
+	while (i < data->philo_count)
+		pthread_mutex_init(&data->forks[i++], NULL);
 }
 
 int init_philosophers(t_data *data)
@@ -31,15 +44,16 @@ int init_philosophers(t_data *data)
 		return (printf("%s\n", ERR_MALLOC), 0);
 	while (i < data->philo_count)
 	{
-		data->philos[i].id = i + 1;
-		printf("i: %d\n", data->philos[i].id);
+		data->philos[i].id = i;
 		data->philos[i].meals = 0;
 		data->philos[i].last_meal = 0;
 		data->philos[i].data = data;
-		if (pthread_create(&data->philos[i].thread, NULL, routine, &data->philos[i]))
+		data->philos[i].l_fork = &data->forks[i];
+		if (pthread_create(&data->philos[i].thread_id, NULL, routine, &data->philos[i]))
 			return (perror("pthread_create"), 0);
 		i++;
 	}
+	init_philo_forks(data);
 	return (1);
 }
 
@@ -51,6 +65,8 @@ int init_data(t_data *data, char **av)
 	data->time_to_die = ft_atoi(av[2]);
 	data->time_to_eat = ft_atoi(av[3]);
 	data->time_to_sleep = ft_atoi(av[4]);
+	data->is_running = false;
+//	init_forks(data);
 	if (av[5])
 		data->meals_count = ft_atoi(av[5]);
 	else
@@ -58,18 +74,3 @@ int init_data(t_data *data, char **av)
 	return (1);
 }
 
-int main(int ac, char **av)
-{
-	t_data data;
-
-	if (ac != 5 && ac != 6)
-		return (printf("%s\n", ERR_ARGS_COUNT));
-	if (!init_data(&data, av))
-		return (0);
-	if (!init_philosophers(&data))
-		return (perror("Error"), free_philos(&data), 0);
-	free_philos(&data);
-	printf("%d\n", data.meals_count);
-	// pthread_mutex_destroy(&data.mutester);
-	return (1);
-}

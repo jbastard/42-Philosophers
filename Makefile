@@ -17,11 +17,13 @@ DEF_COLOR		= \033[0;39m
 SRC_DIR			=	srcs/
 OBJS_DIR		=	objs/
 UTILS_DIR		=	utils/
+CORE_DIR		=	core/
 
 #SRCS FILES
-C_FILES			=	philosophers.c \
+C_FILES			=	$(CORE_DIR)philosophers.c \
+					$(CORE_DIR)init.c \
 					$(UTILS_DIR)libft_utils.c \
-					$(UTILS_DIR)all_kinds_of_free.c \
+					$(UTILS_DIR)all_kinds_of_free.c
 
 SRC				=	$(addprefix $(SRC_DIR), $(C_FILES))
 OBJS			=	$(patsubst $(SRC_DIR)%.c, $(OBJS_DIR)%.o, $(SRC))
