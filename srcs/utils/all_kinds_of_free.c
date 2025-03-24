@@ -12,15 +12,4 @@
 
 #include "../../includes/philosophers.h"
 
-void	free_philos(t_data *data)
-{
-	int i;
 
-	i = 0;
-	while (i < data->philo_count)
-	{
-		pthread_join(data->philos[i].thread_id, NULL);
-		i++;
-	}
-	free(data->philos);
-}

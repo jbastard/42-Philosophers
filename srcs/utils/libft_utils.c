@@ -12,7 +12,7 @@
 
 # include "../../includes/philosophers.h"
 
-int get_time_in_ms(void)
+long long get_time_in_ms(void)
 {
 	struct timeval tv;
 

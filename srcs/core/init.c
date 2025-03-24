@@ -6,7 +6,7 @@
 /*   By: jbastard <jbastard@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 11:50:39 by jbastard          #+#    #+#             */
-/*   Updated: 2025/03/24 12:18:49 by jbastard         ###   ########.fr       */
+/*   Updated: 2025/03/24 13:48:42 by jbastard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ int init_philosophers(t_data *data)
 		i++;
 	}
 	init_philo_forks(data);
+	data->is_running = true;
 	return (1);
 }
 
@@ -66,7 +67,7 @@ int init_data(t_data *data, char **av)
 	data->time_to_eat = ft_atoi(av[3]);
 	data->time_to_sleep = ft_atoi(av[4]);
 	data->is_running = false;
-//	init_forks(data);
+	init_forks(data);
 	if (av[5])
 		data->meals_count = ft_atoi(av[5]);
 	else
