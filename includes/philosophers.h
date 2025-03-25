@@ -6,7 +6,7 @@
 /*   By: jbastard <jbastard@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 09:35:08 by jbastard          #+#    #+#             */
-/*   Updated: 2025/03/24 13:24:41 by jbastard         ###   ########.fr       */
+/*   Updated: 2025/03/25 14:33:05 by jbastard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,13 +32,15 @@ typedef struct s_data t_data;
 typedef struct s_philo t_philo;
 
 struct s_data {
-	bool			is_running;
-	pthread_mutex_t *is_running_mutex;
 	int				philo_count;
-	int				meals_count;
+	int				time_to_sleep;
 	int				time_to_die;
 	int				time_to_eat;
-	int				time_to_sleep;
+	int				meals_count;
+	bool			is_running;
+	pthread_mutex_t is_running_mutex;
+	long long		start_time;
+	pthread_mutex_t start_time_mutex;
 	pthread_mutex_t *forks;
 	t_philo			*philos;
 };
@@ -54,18 +56,20 @@ struct s_philo {
 };
 
 //CORE
-int		init_data(t_data *data, char **av);
-int		init_philosophers(t_data *data);
-void	init_forks(t_data *data);
-void	init_philo_forks(t_data *data);
+void		init_data(t_data *data, char **av);
+void		init_philosophers(t_data *data);
+void		init_forks(t_data *data, int i);
 
-void *routine(void *r_philo);
+void		*routine(void *r_philo);
 
 //UTILS
 int			is_digit(int c);
 int 		ft_atoi(char *str);
 int			is_numeric_args(char **av);
+int			elapsed_time(t_data *data);
+
 long long	get_time_in_ms(void);
+void		wait_philosophers(t_data *data);
 
 //ALL_KINDS_OF_FREE
 

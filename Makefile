@@ -23,6 +23,7 @@ CORE_DIR		=	core/
 C_FILES			=	$(CORE_DIR)philosophers.c \
 					$(CORE_DIR)init.c \
 					$(UTILS_DIR)libft_utils.c \
+					$(UTILS_DIR)utils.c \
 					$(UTILS_DIR)all_kinds_of_free.c
 
 SRC				=	$(addprefix $(SRC_DIR), $(C_FILES))

@@ -5,54 +5,79 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: jbastard <jbastard@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/21 09:35:08 by jbastard          #+#    #+#             */
-/*   Updated: 2025/03/24 13:52:02 by jbastard         ###   ########.fr       */
+/*   Created: 2025/03/25 12:46:06 by jbastard          #+#    #+#             */
+/*   Updated: 2025/03/25 14:36:53 by jbastard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/philosophers.h"
+# include "../../includes/philosophers.h"
 
-int is_dead(t_philo	*philo)
+void	print_status(t_philo *philo, char *status)
 {
-	if (get_time_in_ms() - philo->last_meal > (long long)philo->data->time_to_die)
-		return (printf("%d died\n", philo->id), 1);
-	return (0);
+	pthread_mutex_lock(&philo->data->start_time_mutex);
+	printf("%lld %d %s\n", get_time_in_ms() - philo->data->start_time, philo->id + 1, status);
+	pthread_mutex_unlock(&philo->data->start_time_mutex);
 }
 
-void *routine(void *r_philo)
+int 	philo_eat(t_philo *philo)
 {
-	t_philo *philo = (t_philo *)r_philo;
+	pthread_mutex_lock(philo->l_fork);
+	pthread_mutex_lock(philo->r_fork);
+	philo->last_meal = get_time_in_ms();
+	philo->meals++;
+	print_status(philo, "is eating");
+	usleep(philo->data->time_to_eat * 1000);
+	pthread_mutex_unlock(philo->l_fork);
+	pthread_mutex_unlock(philo->r_fork);
+	return (1);
+}
 
+int 	philo_sleep(t_philo *philo)
+{
+	print_status(philo, "is sleeping");
+	usleep(philo->data->time_to_sleep * 1000);
+	return (1);
+}
+
+int 	philo_think(t_philo *philo)
+{
+	print_status(philo, "is thinking");
+	return (1);
+}
+
+void	*routine(void *arg)
+{
+	t_philo	*philo;
+
+	philo = (t_philo *)arg;
+	while (!philo->data->is_running)
+		usleep(20);
 	while (philo->data->is_running)
 	{
-		philo->last_meal = get_time_in_ms();
-		usleep(philo->data->time_to_eat * 1000);
-		if (is_dead(philo))
+		if (philo->data->meals_count != -1
+			&& philo->meals >= philo->data->meals_count)
+			break ;
+		if (!philo_eat(philo))
+			break ;
+		if (!philo_sleep(philo))
+			break ;
+		if (!philo_think(philo))
 			break ;
 	}
+	pthread_mutex_lock(&philo->data->is_running_mutex);
 	philo->data->is_running = false;
+	pthread_mutex_unlock(&philo->data->is_running_mutex);
 	return (NULL);
 }
 
-void	wait_philosophers(t_data *data)
+int	main(int ac, char **av)
 {
-	int i;
+	t_data	data;
 
-	i = 0;
-	while (i < data->philo_count)
-		pthread_join(data->philos[i++].thread_id, NULL);
-}
-
-int main(int ac, char **av)
-{
-	t_data data;
-
-	if (ac != 5 && ac != 6)
-		return (printf("%s\n", ERR_ARGS_COUNT));
-	if (!init_data(&data, av))
-		return (0);
-	if (!init_philosophers(&data))
-		return (0);
+	if ((ac != 5 && ac != 6) || !is_numeric_args(av + 1))
+		return (printf("%s\n", ERR_ARGS_TYPE), 1);
+	init_data(&data, av);
+	init_philosophers(&data);
 	wait_philosophers(&data);
-	return (1);
+	return (0);
 }

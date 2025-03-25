@@ -1,57 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   libft_utils.c                                      :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jbastard <jbastard@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/23 15:43:10 by jbastard          #+#    #+#             */
-/*   Updated: 2025/03/25 14:55:24 by jbastard         ###   ########.fr       */
+/*   Created: 2025/03/25 13:58:00 by jbastard          #+#    #+#             */
+/*   Updated: 2025/03/25 14:32:29 by jbastard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "../../includes/philosophers.h"
 
-int is_digit(int c)
+int elapsed_time(t_data *data)
 {
-	return (c >= '0' && c <= '9');
+	int elapsed_time;
+
+	pthread_mutex_lock(&data->start_time_mutex);
+	elapsed_time = get_time_in_ms() - data->start_time;
+	pthread_mutex_unlock(&data->start_time_mutex);
+	return (elapsed_time);
 }
 
-int is_numeric_args(char **av)
+void wait_philosophers(t_data *data)
 {
 	int i;
-	int j;
 
 	i = 0;
-	while (av[i])
-	{
-		j = 0;
-		while (av[i][j])
-			if (!is_digit(av[i][j++]))
-				return (0);
-		i++;
-	}
-	return (1);
+	while (i < data->philo_count)
+		pthread_join(data->philos[i++].thread_id, NULL);
 }
 
-int ft_atoi(char *str)
+long long get_time_in_ms(void)
 {
-	int res;
-	int i;
-	int sign;
+	struct timeval tv;
 
-	i = 0;
-	sign = 1;
-	res = 0;
-	if (str[i] == '-')
-	{
-		sign = -1;
-		i++;
-	}
-	while (str[i])
-	{
-		res = res * 10 + str[i] - '0';
-		i++;
-	}
-	return (res * sign);
+	gettimeofday(&tv, NULL);
+	return (tv.tv_sec * 1000 + tv.tv_usec / 1000);
 }
