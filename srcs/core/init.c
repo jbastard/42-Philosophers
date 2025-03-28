@@ -58,7 +58,7 @@ void init_philosophers(t_data *data)
 		data->philos[i].meals = 0;
 		data->philos[i].last_meal = get_time_in_ms();
 		data->philos[i].data = data;
-		pthread_mutex_init(&data->philos->last_meal_mutex, NULL);
+		pthread_mutex_init(&data->philos[i].last_meal_mutex, NULL);
 		init_forks(data, i);
 		if (pthread_create(&data->philos[i].thread_id, NULL, routine, &data->philos[i]))
 			perror("pthread_create");

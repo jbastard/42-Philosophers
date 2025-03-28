@@ -6,7 +6,7 @@
 /*   By: jbastard <jbastard@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 12:46:06 by jbastard          #+#    #+#             */
-/*   Updated: 2025/03/28 17:06:38 by jbastard         ###   ########.fr       */
+/*   Updated: 2025/03/28 17:19:00 by jbastard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,23 +14,20 @@
 
 int 	philo_take_forks(t_philo *philo)
 {
-	pthread_mutex_t *first_fork;
-	pthread_mutex_t *second_fork;
-
 	if (philo->l_fork < philo->r_fork)
 	{
-		first_fork = philo->l_fork;
-		second_fork = philo->r_fork;
+		pthread_mutex_lock(philo->l_fork);
+		print_status(philo, PHILO_TAKING_FORK);
+		pthread_mutex_lock(philo->r_fork);
+		print_status(philo, PHILO_TAKING_FORK);
 	}
 	else
 	{
-		first_fork = philo->r_fork;
-		second_fork = philo->l_fork;
+		pthread_mutex_lock(philo->r_fork);
+		print_status(philo, PHILO_TAKING_FORK);
+		pthread_mutex_lock(philo->l_fork);
+		print_status(philo, PHILO_TAKING_FORK);
 	}
-	pthread_mutex_lock(first_fork);
-	print_status(philo, PHILO_TAKING_FORK);
-	pthread_mutex_lock(second_fork);
-	print_status(philo, PHILO_TAKING_FORK);
 	return (1);
 }
 
@@ -46,6 +43,7 @@ int 	philo_eat(t_philo *philo)
 	usleep(philo->data->time_to_eat * 1000);
 	pthread_mutex_lock(&philo->last_meal_mutex);
 	philo->last_meal = get_time_in_ms();
+	philo->meals++;
 	pthread_mutex_unlock(&philo->last_meal_mutex);
 	return (1);
 }
