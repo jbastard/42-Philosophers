@@ -6,7 +6,7 @@
 /*   By: jbastard <jbastard@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 12:46:06 by jbastard          #+#    #+#             */
-/*   Updated: 2025/03/28 12:03:28 by jbastard         ###   ########.fr       */
+/*   Updated: 2025/03/28 12:59:48 by jbastard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	print_status(t_philo *philo, char *status)
 {
 	pthread_mutex_lock(&philo->data->start_time_mutex);
-	printf("%lld %d %s\n", get_time_in_ms() - philo->data->start_time, philo->id + 1, status);
+	printf("%-7lld %d %s\n", get_time_in_ms() - philo->data->start_time, philo->id + 1, status);
 	pthread_mutex_unlock(&philo->data->start_time_mutex);
 }
 
@@ -23,25 +23,37 @@ int 	philo_eat(t_philo *philo)
 {
 	pthread_mutex_lock(philo->l_fork);
 	pthread_mutex_lock(philo->r_fork);
-	philo->last_meal = get_time_in_ms();
 	philo->meals++;
-	print_status(philo, "is eating");
+	print_status(philo, PHILO_EATING);
 	usleep(philo->data->time_to_eat * 1000);
 	pthread_mutex_unlock(philo->l_fork);
 	pthread_mutex_unlock(philo->r_fork);
+	philo->last_meal = get_time_in_ms();
 	return (1);
 }
 
 int 	philo_sleep(t_philo *philo)
 {
-	print_status(philo, "is sleeping");
-	usleep(philo->data->time_to_sleep * 1000);
+	if (philo->data->time_to_die > philo->data->time_to_sleep)
+	{
+		usleep(philo->data->time_to_die);
+		pthread_mutex_lock(&philo->data->is_running_mutex);
+		philo->data->is_running = false;
+		pthread_mutex_unlock(&philo->data->is_running_mutex);
+		print_status(philo, PHILO_DIE);
+		return (0);
+	}
+	else
+	{
+		print_status(philo, PHILO_SLEEPING);
+		usleep(philo->data->time_to_sleep * 1000);
+	}
 	return (1);
 }
 
 int 	philo_think(t_philo *philo)
 {
-	print_status(philo, "is thinking");
+	print_status(philo, PHILO_THINKING);
 	return (1);
 }
 
