@@ -15,14 +15,17 @@
 void	print_status(t_philo *philo, char *status)
 {
 	pthread_mutex_lock(&philo->data->start_time_mutex);
-	printf("%-7lld %d %s\n", get_time_in_ms() - philo->data->start_time, philo->id + 1, status);
+	printf("%-7lld %d %s\n",
+			get_time_in_ms() - philo->data->start_time, philo->id + 1, status);
 	pthread_mutex_unlock(&philo->data->start_time_mutex);
 }
 
 int 	philo_eat(t_philo *philo)
 {
 	pthread_mutex_lock(philo->l_fork);
+	print_status(philo, PHILO_TAKING_FORK);
 	pthread_mutex_lock(philo->r_fork);
+	print_status(philo, PHILO_TAKING_FORK);
 	philo->meals++;
 	print_status(philo, PHILO_EATING);
 	usleep(philo->data->time_to_eat * 1000);
