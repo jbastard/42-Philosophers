@@ -6,7 +6,7 @@
 /*   By: jbastard <jbastard@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 09:35:08 by jbastard          #+#    #+#             */
-/*   Updated: 2025/03/25 14:33:05 by jbastard         ###   ########.fr       */
+/*   Updated: 2025/03/28 12:04:43 by jbastard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,11 @@
 Usage: ./philosophers number_of_philosophers \
 time_to_die time_to_eat time_to_sleep \
 [number_of_times_each_philosopher_must_eat]"
+# define PHILO_TAKING_FORK "\e[1;32m : taking a fork\033[0m"
+# define PHILO_EATING "\e[1;92m : is eating\033[0m"
+# define PHILO_THINKING "\e[1;97m : is thinking\033[0m"
+# define PHILO_SLEEPING "\e[1;94m : is sleeping\033[0m"
+# define PHILO_DIE "\e[1;91m : is dead\033[0m"
 
 typedef struct s_data t_data;
 typedef struct s_philo t_philo;
