@@ -38,3 +38,13 @@ long long get_time_in_ms(void)
 	gettimeofday(&tv, NULL);
 	return (tv.tv_sec * 1000 + tv.tv_usec / 1000);
 }
+
+int 	check_running_state(t_data *data)
+{
+	bool state;
+
+	pthread_mutex_lock(&data->is_running_mutex);
+	state = data->is_running;
+	pthread_mutex_unlock(&data->is_running_mutex);
+	return (state);
+}

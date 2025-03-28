@@ -42,6 +42,7 @@ struct s_data {
 	int				time_to_die;
 	int				time_to_eat;
 	int				meals_count;
+	pthread_mutex_t meals_mutex;
 	bool			is_running;
 	pthread_mutex_t is_running_mutex;
 	long long		start_time;
@@ -55,26 +56,36 @@ struct s_philo {
 	pthread_t		thread_id;
 	int				meals;
 	long long		last_meal;
+	pthread_mutex_t last_meal_mutex;
 	pthread_mutex_t	*l_fork;
 	pthread_mutex_t	*r_fork;
 	t_data			*data;
 };
 
 //CORE
+	//PHILOSOPHERS.C
+void		*routine(void *arg);
+	//INIT.C
 void		init_data(t_data *data, char **av);
-void		init_philosophers(t_data *data);
 void		init_forks(t_data *data, int i);
-
-void		*routine(void *r_philo);
+void		init_philosophers(t_data *data);
+	//MONITOR.C
+void		*monitor_routine(void *arg);
+bool		all_philos_full(t_data *data);
+bool		philo_died(t_philo *philo);
+void		stop_simulation(t_data *data);
 
 //UTILS
+	//LIBFT_UTILS.C
 int			is_digit(int c);
 int 		ft_atoi(char *str);
 int			is_numeric_args(char **av);
+	//UTILS.C
 int			elapsed_time(t_data *data);
-
 long long	get_time_in_ms(void);
 void		wait_philosophers(t_data *data);
+void		print_status(t_philo *philo, char *status);
+int 		check_running_state(t_data *data);
 
 //ALL_KINDS_OF_FREE
 
