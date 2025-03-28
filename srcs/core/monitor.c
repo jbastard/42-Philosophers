@@ -79,11 +79,3 @@ void	*monitor_routine(void *arg)
 	}
 	return (NULL);
 }
-
-void	print_status(t_philo *philo, char *status)
-{
-	pthread_mutex_lock(&philo->data->start_time_mutex);
-	printf("%-7lld %d %s\n",
-		   get_time_in_ms() - philo->data->start_time, philo->id + 1, status);
-	pthread_mutex_unlock(&philo->data->start_time_mutex);
-}

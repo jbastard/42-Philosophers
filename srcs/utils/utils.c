@@ -48,3 +48,13 @@ int 	check_running_state(t_data *data)
 	pthread_mutex_unlock(&data->is_running_mutex);
 	return (state);
 }
+
+void	print_status(t_philo *philo, char *status)
+{
+	pthread_mutex_lock(&philo->data->is_running_mutex);
+	if (philo->data->is_running == true)
+		printf("%-7lld %d : %s\n",
+			   get_time_in_ms() - philo->data->start_time,
+			   philo->id + 1, status);
+	pthread_mutex_unlock(&philo->data->is_running_mutex);
+}

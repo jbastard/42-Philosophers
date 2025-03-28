@@ -6,7 +6,7 @@
 /*   By: jbastard <jbastard@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 12:46:06 by jbastard          #+#    #+#             */
-/*   Updated: 2025/03/28 16:46:11 by jbastard         ###   ########.fr       */
+/*   Updated: 2025/03/28 17:06:38 by jbastard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,12 +44,22 @@ int 	philo_eat(t_philo *philo)
 {
 	print_status(philo, PHILO_EATING);
 	usleep(philo->data->time_to_eat * 1000);
+	pthread_mutex_lock(&philo->last_meal_mutex);
+	philo->last_meal = get_time_in_ms();
+	pthread_mutex_unlock(&philo->last_meal_mutex);
 	return (1);
 }
 
 int 	philo_think(t_philo *philo)
 {
 	return (print_status(philo, PHILO_THINKING), 1);
+}
+
+int		philo_sleep(t_philo *philo)
+{
+	print_status(philo, PHILO_SLEEPING);
+	usleep(philo->data->time_to_sleep * 1000);
+	return (1);
 }
 
 void	*routine(void *arg)
@@ -81,9 +91,9 @@ int	main(int ac, char **av)
 	if ((ac != 5 && ac != 6) || !is_numeric_args(av + 1))
 		return (printf("%s\n", ERR_ARGS_TYPE), 1);
 	data.is_running = true;
-	pthread_create(&monitor_thread, NULL, monitor_routine, &data);
 	init_data(&data, av);
 	init_philosophers(&data);
+	pthread_create(&monitor_thread, NULL, monitor_routine, &data);
 	wait_philosophers(&data);
 	pthread_join(monitor_thread, NULL);
 	return (0);
