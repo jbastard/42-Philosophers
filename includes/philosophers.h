@@ -27,11 +27,12 @@
 Usage: ./philosophers number_of_philosophers \
 time_to_die time_to_eat time_to_sleep \
 [number_of_times_each_philosopher_must_eat]"
-# define PHILO_TAKING_FORK "\e[1;32m : as taken a fork\033[0m"
-# define PHILO_EATING "\e[1;92m : is eating\033[0m"
-# define PHILO_THINKING "\e[1;97m : is thinking\033[0m"
-# define PHILO_SLEEPING "\e[1;94m : is sleeping\033[0m"
-# define PHILO_DIE "\e[1;91m : died\033[0m"
+# define PHILO_TAKING_FORK "\e[1;32mas taken a fork\033[0m"
+# define PHILO_EATING "\e[1;92mis eating\033[0m"
+# define PHILO_THINKING "\e[1;97mis thinking\033[0m"
+# define PHILO_SLEEPING "\e[1;94mis sleeping\033[0m"
+# define PHILO_DIE "\e[1;91mdied\033[0m"
+# define PHILO_FULL "\e[1;93mAll philosophers have completed their meals.\033[0m"
 
 typedef struct s_data t_data;
 typedef struct s_philo t_philo;
@@ -46,6 +47,7 @@ struct s_data {
 	bool			is_running;
 	pthread_mutex_t is_running_mutex;
 	long long		start_time;
+	pthread_mutex_t print_mutex;
 	pthread_mutex_t start_time_mutex;
 	pthread_mutex_t *forks;
 	t_philo			*philos;
@@ -73,7 +75,7 @@ void		init_philosophers(t_data *data);
 void		*monitor_routine(void *arg);
 bool		all_philos_full(t_data *data);
 bool		philo_died(t_philo *philo);
-void		stop_simulation(t_data *data);
+void		manage_simulation(t_data *data, bool start);
 
 //UTILS
 	//LIBFT_UTILS.C

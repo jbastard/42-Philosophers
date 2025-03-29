@@ -6,7 +6,7 @@
 /*   By: jbastard <jbastard@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 13:58:00 by jbastard          #+#    #+#             */
-/*   Updated: 2025/03/25 14:32:29 by jbastard         ###   ########.fr       */
+/*   Updated: 2025/03/29 15:47:58 by jbastard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,16 +37,6 @@ long long get_time_in_ms(void)
 
 	gettimeofday(&tv, NULL);
 	return (tv.tv_sec * 1000 + tv.tv_usec / 1000);
-}
-
-int 	check_running_state(t_data *data)
-{
-	bool state;
-
-	pthread_mutex_lock(&data->is_running_mutex);
-	state = data->is_running;
-	pthread_mutex_unlock(&data->is_running_mutex);
-	return (state);
 }
 
 void	print_status(t_philo *philo, char *status)

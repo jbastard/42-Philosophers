@@ -6,7 +6,7 @@
 /*   By: jbastard <jbastard@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 12:45:50 by jbastard          #+#    #+#             */
-/*   Updated: 2025/03/28 16:37:05 by jbastard         ###   ########.fr       */
+/*   Updated: 2025/03/29 14:15:52 by jbastard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ void init_data(t_data *data, char **av)
 	pthread_mutex_init(&data->is_running_mutex, NULL);
 	pthread_mutex_init(&data->start_time_mutex, NULL);
 	pthread_mutex_init(&data->meals_mutex, NULL);
+	pthread_mutex_init(&data->print_mutex, NULL);
 	data->start_time = get_time_in_ms();
 	if (data->philo_count == 1)
 		data->forks = malloc(sizeof(pthread_mutex_t));
@@ -35,6 +36,7 @@ void init_data(t_data *data, char **av)
 
 void	init_forks(t_data *data, int i)
 {
+	pthread_mutex_init(&data->forks[i], NULL);
 	if (data->philo_count == 1)
 	{
 		data->philos[i].l_fork = &data->forks[0];
@@ -52,18 +54,17 @@ void init_philosophers(t_data *data)
 	int i;
 
 	i = 0;
+	data->start_time = get_time_in_ms();
 	while (i < data->philo_count)
 	{
 		data->philos[i].id = i;
 		data->philos[i].meals = 0;
 		data->philos[i].last_meal = get_time_in_ms();
 		data->philos[i].data = data;
-		pthread_mutex_init(&data->philos[i].last_meal_mutex, NULL);
 		init_forks(data, i);
-		if (pthread_create(&data->philos[i].thread_id, NULL, routine, &data->philos[i]))
-			perror("pthread_create");
+		pthread_mutex_init(&data->philos[i].last_meal_mutex, NULL);
+		pthread_create(&data->philos[i].thread_id, NULL, routine, &data->philos[i]);
 		usleep(20);
 		i++;
 	}
-	data->start_time = get_time_in_ms();
 }

@@ -6,17 +6,30 @@
 /*   By: jbastard <jbastard@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/28 15:52:15 by jbastard          #+#    #+#             */
-/*   Updated: 2025/03/28 16:06:31 by jbastard         ###   ########.fr       */
+/*   Updated: 2025/03/29 15:36:55 by jbastard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/philosophers.h"
 
-void	stop_simulation(t_data *data)
+void	manage_simulation(t_data *data, bool start)
 {
 	pthread_mutex_lock(&data->is_running_mutex);
-	data->is_running = false;
+	if (start == true)
+		data->is_running = true;
+	else
+		data->is_running = false;
 	pthread_mutex_unlock(&data->is_running_mutex);
+}
+
+int 	check_running_state(t_data *data)
+{
+	bool state;
+
+	pthread_mutex_lock(&data->is_running_mutex);
+	state = data->is_running;
+	pthread_mutex_unlock(&data->is_running_mutex);
+	return (state);
 }
 
 bool	philo_died(t_philo *philo)
@@ -53,10 +66,11 @@ bool	all_philos_full(t_data *data)
 
 void	*monitor_routine(void *arg)
 {
-	int i;
-	t_data *data;
+	int		i;
+	t_data	*data;
 
 	data = (t_data *)arg;
+	manage_simulation(data, true);
 	while (check_running_state(data))
 	{
 		i = 0;
@@ -64,16 +78,16 @@ void	*monitor_routine(void *arg)
 		{
 			if (philo_died(&data->philos[i]))
 			{
-				print_status(&data->philos[i], PHILO_DIE);
-				stop_simulation(data);
+				print_status(&data->philos[i++], PHILO_DIE);
+				manage_simulation(data, false);
 				return (NULL);
 			}
-			i++;
-		}
-		if (all_philos_full(data))
-		{
-			stop_simulation(data);
-			return (NULL);
+			if (all_philos_full(data))
+			{
+				printf("%s\n", PHILO_FULL);
+				manage_simulation(data, false);
+				return (NULL);
+			}
 		}
 		usleep(1000);
 	}

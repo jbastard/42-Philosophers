@@ -1,0 +1,4 @@
+Alors, le programme fonctionne presque sans le valgrind, sauf dans certain cas ou un philosophe dort apres
+qu un autre soit mort.
+
+Rien ne fonctionne avec valgrind
