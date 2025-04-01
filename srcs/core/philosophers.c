@@ -38,6 +38,7 @@ void	*monitor_routine(void *arg)
 				philo->data->stop = 1;
 			}
 			pthread_mutex_unlock(&philo->data->write_mutex);
+			usleep(50);
 			return (NULL);
 		}
 		pthread_mutex_unlock(&philo->data->write_mutex);
