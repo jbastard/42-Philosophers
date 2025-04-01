@@ -33,7 +33,7 @@ time_to_die time_to_eat time_to_sleep \
 # define ERROR_INIT_PHILOS "Unable to load philos"
 # define ERROR_INIT_DATA "Unable to load data"
 	//PHILO ACTIONS
-# define ERR_MAX_INT "Values needs to be between INT_MAX & 0"
+# define ERR_MAX_INT "Values needs to be between INT_MAX & 1"
 # define PHILO_TAKING_FORK "\e[1;32mas taken a fork\033[0m"
 # define PHILO_EATING "\e[1;92mis eating\033[0m"
 # define PHILO_THINKING "\e[1;97mis thinking\033[0m"
