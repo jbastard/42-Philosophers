@@ -45,7 +45,6 @@ int		philo_eat(t_philo *philo)
 {
 	print_status(philo, PHILO_EATING);
 	philo->meals_nb++;
-//	printf("%d philo :%d\n", philo->id + 1, philo->meals_nb);
 	philo->meal_l = get_time_in_ms();
 	ft_usleep(philo->data->eat_t, philo->data);
 	if (!check_meals(philo))

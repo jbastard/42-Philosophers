@@ -14,8 +14,11 @@
 
 int 	check_meals(t_philo *philo)
 {
-	if (philo->data->m_count != -1 && philo->data->nb_of_meals >= philo->data->m_count)
+	if (philo->data->m_count != -1 && philo->meals_nb >= philo->data->m_count)
+	{
+		philo->data->nb_of_meals++;
 		return (0);
+	}
 	return (1);
 }
 
@@ -29,13 +32,13 @@ void	*monitor_routine(void *arg)
 	{
 		pthread_mutex_lock(&philo->data->write_mutex);
 		time = get_time_in_ms() - philo->meal_l;
-		if (!check_meals(philo))
+		if (philo->data->nb_of_meals == philo->data->philo_count)
 		{
 			print_status(philo, PHILO_FULL);
 			philo->data->stop = 1;
 			break ;
 		}
-		if (time > philo->data->die_t && !philo->data->stop)
+		else if (time > philo->data->die_t && !philo->data->stop)
 		{
 			print_status(philo, PHILO_DIE);
 			philo->data->stop = 1;
