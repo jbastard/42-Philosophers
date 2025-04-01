@@ -12,11 +12,6 @@
 
 # include "../../includes/philosophers.h"
 
-//int 	check_stop(t_data *data)
-//{
-//
-//}
-
 void	ft_usleep(long int time, t_data *data)
 {
 	long int	start;
@@ -59,12 +54,9 @@ long int get_time_in_ms(void)
 
 void	print_status(t_philo *philo, char *status)
 {
-//	if (!philo->data->stop) {
-//		printf("%-7ld %d : %s\n",
-//			   get_time_in_ms() - philo->data->start_t,
-//			   philo->id + 1, status);
-//	}
-	(void)philo;
-	(void)status;
+	if (!philo->data->stop)
+		printf("%-7ld %d : %s\n",
+			   get_time_in_ms() - philo->data->start_t,
+			   philo->id + 1, status);
 	return ;
 }

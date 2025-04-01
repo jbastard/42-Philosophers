@@ -6,7 +6,7 @@
 /*   By: jbastard <jbastard@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 11:24:29 by jbastard          #+#    #+#             */
-/*   Updated: 2025/04/01 10:14:17 by jbastard         ###   ########.fr       */
+/*   Updated: 2025/04/01 11:39:42 by jbastard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int		philo_eat(t_philo *philo)
 {
 	print_status(philo, PHILO_EATING);
 	philo->meals_nb++;
-	printf("%d philo :%d\n", philo->id + 1, philo->meals_nb);
+//	printf("%d philo :%d\n", philo->id + 1, philo->meals_nb);
 	philo->meal_l = get_time_in_ms();
 	ft_usleep(philo->data->eat_t, philo->data);
 	if (!check_meals(philo))
