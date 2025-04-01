@@ -58,5 +58,7 @@ void	print_status(t_philo *philo, char *status)
 		printf("%-7ld %d : %s\n",
 			   get_time_in_ms() - philo->data->start_t,
 			   philo->id + 1, status);
+	else
+		printf("%s\n", PHILO_FULL);
 	return ;
 }

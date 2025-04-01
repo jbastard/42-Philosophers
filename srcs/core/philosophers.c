@@ -32,16 +32,16 @@ void	*monitor_routine(void *arg)
 	{
 		pthread_mutex_lock(&philo->data->write_mutex);
 		time = get_time_in_ms() - philo->meal_l;
-		if (philo->data->nb_of_meals == philo->data->philo_count)
+		if (philo->data->nb_of_meals == philo->data->philo_count && !philo->data->stop && philo->data->m_count > 0)
 		{
-			print_status(philo, PHILO_FULL);
 			philo->data->stop = 1;
+			printf("%s\n", PHILO_FULL);
 			break ;
 		}
 		else if (time > philo->data->die_t && !philo->data->stop)
 		{
-			print_status(philo, PHILO_DIE);
 			philo->data->stop = 1;
+			print_status(philo, PHILO_DIE);
 			break ;
 		}
 		pthread_mutex_unlock(&philo->data->write_mutex);
@@ -61,14 +61,14 @@ void	*routine(void *arg)
 		usleep(500);
 	while (1)
 	{
-		if (!philo_think(philo) || !check_meals(philo))
+		if (!philo_think(philo))
 			break ;
 		if (!philo_take_forks(philo))
 			break ;
 		if (!philo_eat(philo))
 			break ;
 		philo_release_forks(philo);
-		if (!philo_sleep(philo) || !check_meals(philo))
+		if (!philo_sleep(philo))
 			break ;
 	}
 	philo_release_forks(philo);
@@ -97,7 +97,7 @@ int	main(int ac, char **av)
 	if ((ac != 5 && ac != 6) || !is_numeric_args(av + 1))
 		return (printf("%s\n", ERR_ARGS_TYPE), 0);
 	if (!init_data(&dp, av))
-		return (printf("%s\n", ERROR_INIT_DATA), 0);
+		return (printf("%s\n", ERR_MAX_INT), 0);
 	if (!init_philosophers(&dp))
 		return (printf("%s\n", ERROR_INIT_PHILOS), 0);
 	if (!start_threads(&dp))

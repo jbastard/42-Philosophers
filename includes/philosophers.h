@@ -20,6 +20,7 @@
 # include <sys/time.h>
 # include <pthread.h>
 # include <stdbool.h>
+# include <limits.h>
 
 	//ERROR
 # define ERR_ARGS_COUNT "Error: Wrong number of arguments"
@@ -32,6 +33,7 @@ time_to_die time_to_eat time_to_sleep \
 # define ERROR_INIT_PHILOS "Unable to load philos"
 # define ERROR_INIT_DATA "Unable to load data"
 	//PHILO ACTIONS
+# define ERR_MAX_INT "Values needs to be between INT_MAX & 0"
 # define PHILO_TAKING_FORK "\e[1;32mas taken a fork\033[0m"
 # define PHILO_EATING "\e[1;92mis eating\033[0m"
 # define PHILO_THINKING "\e[1;97mis thinking\033[0m"
@@ -45,9 +47,9 @@ typedef struct s_dp		t_dp;
 
 struct s_data {
 	int				philo_count;
-	int				sleep_t;
-	int				die_t;
-	int				eat_t;
+	long int				sleep_t;
+	long int				die_t;
+	long int				eat_t;
 	int				m_count;
 	long int 		start_t;
 	pthread_mutex_t	write_mutex;

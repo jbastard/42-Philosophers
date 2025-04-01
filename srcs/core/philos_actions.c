@@ -22,7 +22,7 @@ int philo_take_forks(t_philo *philo)
 {
 	if (philo->data->stop)
 		return (0);
-	if (philo->data->philo_count == 1)
+	if (philo->data->philo_count == 1 && !philo->data->stop)
 		return (print_status(philo, PHILO_TAKING_FORK), 0);
 	else if (!philo->id % 2)
 	{
