@@ -1,4 +1,4 @@
-NAME			= philosophers
+NAME			= philo
 
 #COMPILATION
 CC				= clang
@@ -22,6 +22,7 @@ CORE_DIR		=	core/
 #SRCS FILES
 C_FILES			=	$(CORE_DIR)philosophers.c \
 					$(CORE_DIR)init.c \
+					$(CORE_DIR)philos_actions.c \
 					$(CORE_DIR)monitor.c \
 					$(UTILS_DIR)libft_utils.c \
 					$(UTILS_DIR)utils.c \

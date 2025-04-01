@@ -6,65 +6,52 @@
 /*   By: jbastard <jbastard@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 12:45:50 by jbastard          #+#    #+#             */
-/*   Updated: 2025/03/29 14:15:52 by jbastard         ###   ########.fr       */
+/*   Updated: 2025/03/31 12:00:50 by jbastard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "../../includes/philosophers.h"
 
-void init_data(t_data *data, char **av)
+int	init_data(t_dp *dp, char **av)
 {
-	data->philo_count = atoi(av[1]);
-	data->time_to_die = atoi(av[2]);
-	data->time_to_eat = atoi(av[3]);
-	data->time_to_sleep = atoi(av[4]);
+	t_data	data;
+
+	data.philo_count = ft_atoi(av[1]);
+	data.die_t = ft_atol(av[2]);
+	data.eat_t = ft_atol(av[3]);
+	data.sleep_t = ft_atol(av[4]);
 	if (av[5])
-		data->meals_count = atoi(av[5]);
+		data.m_count = ft_atoi(av[5]);
 	else
-		data->meals_count = -1;
-	pthread_mutex_init(&data->is_running_mutex, NULL);
-	pthread_mutex_init(&data->start_time_mutex, NULL);
-	pthread_mutex_init(&data->meals_mutex, NULL);
-	pthread_mutex_init(&data->print_mutex, NULL);
-	data->start_time = get_time_in_ms();
-	if (data->philo_count == 1)
-		data->forks = malloc(sizeof(pthread_mutex_t));
-	else
-		data->forks = malloc(sizeof(pthread_mutex_t) * (data->philo_count + 1));
-	data->philos = malloc(sizeof(t_philo) * data->philo_count);
+		data.m_count = -1;
+	data.start_t = get_time_in_ms();
+	data.stop = 0;
+	pthread_mutex_init(&data.write_mutex, NULL);
+	dp->dt = data;
+	return (1);
 }
 
-void	init_forks(t_data *data, int i)
-{
-	pthread_mutex_init(&data->forks[i], NULL);
-	if (data->philo_count == 1)
-	{
-		data->philos[i].l_fork = &data->forks[0];
-		data->philos[i].r_fork = &data->forks[0];
-	}
-	else
-	{
-		data->philos[i].l_fork = &data->forks[i];
-		data->philos[i].r_fork = &data->forks[(i + 1) % data->philo_count];
-	}
-}
-
-void init_philosophers(t_data *data)
+int	init_philosophers(t_dp *dp)
 {
 	int i;
 
 	i = 0;
-	data->start_time = get_time_in_ms();
-	while (i < data->philo_count)
+	dp->ph= malloc(sizeof(t_philo) * dp->dt.philo_count);
+	while (i < dp->dt.philo_count)
 	{
-		data->philos[i].id = i;
-		data->philos[i].meals = 0;
-		data->philos[i].last_meal = get_time_in_ms();
-		data->philos[i].data = data;
-		init_forks(data, i);
-		pthread_mutex_init(&data->philos[i].last_meal_mutex, NULL);
-		pthread_create(&data->philos[i].thread_id, NULL, routine, &data->philos[i]);
-		usleep(20);
+		dp->ph[i].id = i;
+		dp->ph[i].meals_nb = 0;
+		dp->ph[i].meal_l = 0;
+		dp->ph[i].data = &dp->dt;
+		dp->ph[i].finish = 0;
+		pthread_mutex_init(&dp->ph[i].l_fork, NULL);
 		i++;
 	}
+	i = 0;
+	while (i < dp->dt.philo_count)
+	{
+		dp->ph[i].r_fork = &dp->ph[(i + 1) % dp->dt.philo_count].l_fork;
+		i++;
+	}
+	return (1);
 }

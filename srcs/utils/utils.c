@@ -6,32 +6,50 @@
 /*   By: jbastard <jbastard@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 13:58:00 by jbastard          #+#    #+#             */
-/*   Updated: 2025/03/29 15:47:58 by jbastard         ###   ########.fr       */
+/*   Updated: 2025/04/01 10:24:56 by jbastard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "../../includes/philosophers.h"
 
-int elapsed_time(t_data *data)
-{
-	int elapsed_time;
+//int 	check_stop(t_data *data)
+//{
+//
+//}
 
-	pthread_mutex_lock(&data->start_time_mutex);
-	elapsed_time = get_time_in_ms() - data->start_time;
-	pthread_mutex_unlock(&data->start_time_mutex);
-	return (elapsed_time);
+void	ft_usleep(long int time, t_data *data)
+{
+	long int	start;
+
+	start = get_time_in_ms();
+	while ((get_time_in_ms() - start) < time)
+	{
+		pthread_mutex_lock(&data->write_mutex);
+		if (data->stop)
+		{
+			pthread_mutex_unlock(&data->write_mutex);
+			break ;
+		}
+		pthread_mutex_unlock(&data->write_mutex);
+		usleep(500);
+	}
 }
 
-void wait_philosophers(t_data *data)
+void	wait_philosophers(t_dp *dp)
 {
 	int i;
 
 	i = 0;
-	while (i < data->philo_count)
-		pthread_join(data->philos[i++].thread_id, NULL);
+	while (i < dp->dt.philo_count)
+		pthread_join(dp->ph[i++].thread_id, NULL);
+	i = 0;
+	while (i < dp->dt.philo_count)
+		pthread_mutex_destroy(&dp->ph[i++].l_fork);
+	pthread_mutex_destroy(&dp->dt.write_mutex);
+	free(dp->ph);
 }
 
-long long get_time_in_ms(void)
+long int get_time_in_ms(void)
 {
 	struct timeval tv;
 
@@ -41,10 +59,12 @@ long long get_time_in_ms(void)
 
 void	print_status(t_philo *philo, char *status)
 {
-	pthread_mutex_lock(&philo->data->is_running_mutex);
-	if (philo->data->is_running == true)
-		printf("%-7lld %d : %s\n",
-			   get_time_in_ms() - philo->data->start_time,
-			   philo->id + 1, status);
-	pthread_mutex_unlock(&philo->data->is_running_mutex);
+//	if (!philo->data->stop) {
+//		printf("%-7ld %d : %s\n",
+//			   get_time_in_ms() - philo->data->start_t,
+//			   philo->id + 1, status);
+//	}
+	(void)philo;
+	(void)status;
+	return ;
 }
