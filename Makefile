@@ -24,9 +24,9 @@ C_FILES			=	$(CORE_DIR)philosophers.c \
 					$(CORE_DIR)init.c \
 					$(CORE_DIR)philos_actions.c \
 					$(CORE_DIR)monitor.c \
+					$(UTILS_DIR)philo_manager.c \
 					$(UTILS_DIR)libft_utils.c \
 					$(UTILS_DIR)utils.c \
-					$(UTILS_DIR)all_kinds_of_free.c
 
 SRC				=	$(addprefix $(SRC_DIR), $(C_FILES))
 OBJS			=	$(patsubst $(SRC_DIR)%.c, $(OBJS_DIR)%.o, $(SRC))
