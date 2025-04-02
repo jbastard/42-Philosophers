@@ -26,7 +26,7 @@ void	ft_usleep(long int time, t_data *data)
 			break ;
 		}
 		pthread_mutex_unlock(&data->write_mutex);
-		usleep(500);
+		usleep(100);
 	}
 }
 
@@ -69,6 +69,7 @@ long int get_time_in_ms(void)
 void	print_status(t_philo *philo, char *status)
 {
 	long	timestamp;
+
 	timestamp = get_time_in_ms() - philo->start_time;
 	pthread_mutex_lock(&philo->data->write_mutex);
 	if (!philo->data->stop || ft_strncmp(status, PHILO_DIE, 30) == 0)

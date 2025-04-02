@@ -30,7 +30,7 @@ void	*routine(void *arg)
 
 	philo->meal_l = philo->data->start_t;
 	if (philo->id % 2)
-		usleep(500);
+		usleep(100);
 	while (!philo->data->stop)
 	{
 		if (!philo_think(philo))

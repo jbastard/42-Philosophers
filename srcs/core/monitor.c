@@ -39,7 +39,7 @@ void	*global_monitor(void *arg)
 			printf("%s\n", PHILO_FULL);
 			return (NULL);
 		}
-		usleep(500);
+		usleep(100);
 	}
 	return (NULL);
 }

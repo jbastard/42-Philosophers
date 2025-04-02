@@ -64,7 +64,7 @@ int 	philo_release_forks(t_philo *philo)
 {
 	pthread_mutex_unlock(philo->r_fork);
 	pthread_mutex_unlock(&philo->l_fork);
-	usleep(500);
+	usleep(100);
 	return (1);
 }
 
