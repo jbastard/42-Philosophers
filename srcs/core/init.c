@@ -51,6 +51,7 @@ int	init_philosophers(t_dp *dp)
 		dp->ph[i].meals_nb = 0;
 		dp->ph[i].data = &dp->dt;
 		dp->ph[i].meal_l = dp->dt.start_t;
+		dp->ph[i].start_time = dp->dt.start_t;
 		pthread_mutex_init(&dp->ph[i].l_fork, NULL);
 		i++;
 	}

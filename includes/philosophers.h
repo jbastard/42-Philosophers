@@ -66,6 +66,7 @@ struct s_philo {
 	pthread_mutex_t	l_fork;
 	pthread_mutex_t	*r_fork;
 	t_data			*data;
+	long		start_time;
 };
 
 struct s_dp {

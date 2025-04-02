@@ -68,10 +68,10 @@ long int get_time_in_ms(void)
 
 void	print_status(t_philo *philo, char *status)
 {
+	long	timestamp;
+	timestamp = get_time_in_ms() - philo->start_time;
 	pthread_mutex_lock(&philo->data->write_mutex);
 	if (!philo->data->stop || ft_strncmp(status, PHILO_DIE, 30) == 0)
-		printf("%-7ld %d : %s\n",
-			   get_time_in_ms() - philo->data->start_t,
-			   philo->id + 1, status);
+		printf("%-7ld %d : %s\n", timestamp, philo->id + 1, status);
 	pthread_mutex_unlock(&philo->data->write_mutex);
 }
