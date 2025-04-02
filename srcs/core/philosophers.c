@@ -6,7 +6,7 @@
 /*   By: jbastard <jbastard@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 12:46:06 by jbastard          #+#    #+#             */
-/*   Updated: 2025/04/01 12:08:43 by jbastard         ###   ########.fr       */
+/*   Updated: 2025/04/02 09:50:05 by jbastard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,52 +14,24 @@
 
 int 	check_meals(t_philo *philo)
 {
-	if (philo->data->m_count != -1 && philo->meals_nb >= philo->data->m_count)
+	if (philo->data->m_count > 0 && philo->meals_nb >= philo->data->m_count)
 	{
+		pthread_mutex_lock(&philo->data->write_mutex);
 		philo->data->nb_of_meals++;
+		pthread_mutex_unlock(&philo->data->write_mutex);
 		return (0);
 	}
 	return (1);
-}
-
-void	*monitor_routine(void *arg)
-{
-	t_philo		*philo;
-	long int	time;
-
-	philo = (t_philo *)arg;
-	while (!philo->data->stop)
-	{
-		pthread_mutex_lock(&philo->data->write_mutex);
-		time = get_time_in_ms() - philo->meal_l;
-		if (philo->data->nb_of_meals == philo->data->philo_count && !philo->data->stop && philo->data->m_count > 0)
-		{
-			philo->data->stop = 1;
-			printf("%s\n", PHILO_FULL);
-			break ;
-		}
-		else if (time > philo->data->die_t && !philo->data->stop)
-		{
-			philo->data->stop = 1;
-			print_status(philo, PHILO_DIE);
-			break ;
-		}
-		pthread_mutex_unlock(&philo->data->write_mutex);
-		usleep(500);
-	}
-	pthread_mutex_unlock(&philo->data->write_mutex);
-	return (NULL);
 }
 
 void	*routine(void *arg)
 {
 	t_philo *philo = (t_philo *)arg;
 
-	philo->meal_l = get_time_in_ms();
-	pthread_create(&philo->thread_mo_id, NULL, monitor_routine, philo);
+	philo->meal_l = philo->data->start_t;
 	if (philo->id % 2)
 		usleep(500);
-	while (1)
+	while (!philo->data->stop)
 	{
 		if (!philo_think(philo))
 			break ;
@@ -72,7 +44,6 @@ void	*routine(void *arg)
 			break ;
 	}
 	philo_release_forks(philo);
-	pthread_join(philo->thread_mo_id, NULL);
 	return (NULL);
 }
 
@@ -93,15 +64,20 @@ int 	start_threads(t_dp	*dp)
 int	main(int ac, char **av)
 {
 	t_dp	dp;
+	pthread_t	monitor;
 
 	if ((ac != 5 && ac != 6) || !is_numeric_args(av + 1))
 		return (printf("%s\n", ERR_ARGS_TYPE), 0);
 	if (!init_data(&dp, av))
 		return (printf("%s\n", ERR_MAX_INT), 0);
+	dp.dt.start_t = get_time_in_ms();
 	if (!init_philosophers(&dp))
 		return (printf("%s\n", ERROR_INIT_PHILOS), 0);
 	if (!start_threads(&dp))
 		return (printf("%s\n", ERR_START_THREAD), 0);
+	pthread_create(&monitor, NULL, &global_monitor, &dp);
 	wait_philosophers(&dp);
+	pthread_join(monitor, NULL);
+	free_philosophers(&dp);
 	return (1);
 }

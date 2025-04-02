@@ -32,14 +32,23 @@ time_to_die time_to_eat time_to_sleep \
 [number_of_times_each_philosopher_must_eat]"
 # define ERROR_INIT_PHILOS "Unable to load philos"
 # define ERROR_INIT_DATA "Unable to load data"
+
 	//PHILO ACTIONS
+//# define ERR_MAX_INT "Values needs to be between INT_MAX & 1"
+//# define PHILO_TAKING_FORK "\e[1;32mas taken a fork\033[0m"
+//# define PHILO_EATING "\e[1;92mis eating\033[0m"
+//# define PHILO_THINKING "\e[1;97mis thinking\033[0m"
+//# define PHILO_SLEEPING "\e[1;94mis sleeping\033[0m"
+//# define PHILO_DIE "\e[1;91mdied\033[0m"
+//# define PHILO_FULL "\e[1;93mAll philosophers have completed their meals.\033[0m"
+
 # define ERR_MAX_INT "Values needs to be between INT_MAX & 1"
-# define PHILO_TAKING_FORK "\e[1;32mas taken a fork\033[0m"
-# define PHILO_EATING "\e[1;92mis eating\033[0m"
-# define PHILO_THINKING "\e[1;97mis thinking\033[0m"
-# define PHILO_SLEEPING "\e[1;94mis sleeping\033[0m"
-# define PHILO_DIE "\e[1;91mdied\033[0m"
-# define PHILO_FULL "\e[1;93mAll philosophers have completed their meals.\033[0m"
+# define PHILO_TAKING_FORK "has taken a fork"
+# define PHILO_EATING "is eating"
+# define PHILO_THINKING "is thinking"
+# define PHILO_SLEEPING "is sleeping"
+# define PHILO_DIE "died\033[0m"
+# define PHILO_FULL "All philosophers have completed their meals."
 
 typedef struct s_data	t_data;
 typedef struct s_philo	t_philo;
@@ -66,7 +75,6 @@ struct s_philo {
 	pthread_mutex_t	l_fork;
 	pthread_mutex_t	*r_fork;
 	t_data			*data;
-	int 			finish;
 };
 
 struct s_dp {
@@ -90,12 +98,15 @@ int 		philo_release_forks(t_philo *philo);
 int 		philo_sleep(t_philo	*philo);
 
 int 	check_meals(t_philo *philo);
+void	free_philosophers(t_dp *dp);
+void	*global_monitor(void *arg);
+int	ft_strncmp(const char	*s1, const char	*s2, size_t	n);
 
 //UTILS
 	//LIBFT_UTILS.C
 int			is_digit(int c);
 int 		ft_atoi(const char *str);
-long int 		ft_atol(const char *str);
+long long 		ft_atol(const char *str);
 int			is_numeric_args(char **av);
 	//UTILS.C
 long int	elapsed_time(t_data *data);

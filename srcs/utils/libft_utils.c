@@ -56,7 +56,7 @@ int ft_atoi(const char *str)
 	return (res * sign);
 }
 
-long int ft_atol(const char *str)
+long long ft_atol(const char *str)
 {
 	int res;
 	int i;
@@ -73,7 +73,23 @@ long int ft_atol(const char *str)
 	while (str[i])
 	{
 		res = res * 10 + str[i] - '0';
+		if (res > INT_MAX)
+			return (0);
 		i++;
 	}
 	return (res * sign);
+}
+
+int	ft_strncmp(const char	*s1, const char	*s2, size_t	n)
+{
+	size_t	i;
+
+	i = 0;
+	while (i < n && (s1[i] || s2[i]))
+	{
+		if (s1[i] != s2[i])
+			return ((unsigned char)s1[i] - (unsigned char)s2[i]);
+		i++;
+	}
+	return (0);
 }
