@@ -12,18 +12,6 @@
 
 # include "../../includes/philosophers.h"
 
-int 	check_meals(t_philo *philo)
-{
-	if (philo->data->m_count > 0 && philo->meals_nb >= philo->data->m_count)
-	{
-		pthread_mutex_lock(&philo->data->write_mutex);
-		philo->data->nb_of_meals++;
-		pthread_mutex_unlock(&philo->data->write_mutex);
-		return (0);
-	}
-	return (1);
-}
-
 void	*routine(void *arg)
 {
 	t_philo *philo = (t_philo *)arg;
@@ -45,20 +33,6 @@ void	*routine(void *arg)
 	}
 	philo_release_forks(philo);
 	return (NULL);
-}
-
-int 	start_threads(t_dp	*dp)
-{
-	int	i;
-
-	i = 0;
-	while (i < dp->dt.philo_count)
-	{
-		if (pthread_create(&dp->ph[i].thread_id, NULL, &routine, &dp->ph[i]))
-			return (0);
-		i++;
-	}
-	return (1);
 }
 
 int	main(int ac, char **av)

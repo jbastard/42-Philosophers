@@ -30,34 +30,6 @@ void	ft_usleep(long int time, t_data *data)
 	}
 }
 
-void	wait_philosophers(t_dp *dp)
-{
-	int	i;
-
-	i = 0;
-	while (i < dp->dt.philo_count)
-	{
-		pthread_join(dp->ph[i].thread_id, NULL);
-		i++;
-	}
-}
-
-void	free_philosophers(t_dp *dp)
-{
-	int	i;
-
-	if (!dp->ph)
-		return ;
-	i = 0;
-	while (i < dp->dt.philo_count)
-	{
-		pthread_mutex_destroy(&dp->ph[i].l_fork);
-		i++;
-	}
-	pthread_mutex_destroy(&dp->dt.write_mutex);
-	free(dp->ph);
-}
-
 long int get_time_in_ms(void)
 {
 	struct timeval tv;

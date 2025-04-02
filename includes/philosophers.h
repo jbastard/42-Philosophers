@@ -6,7 +6,7 @@
 /*   By: jbastard <jbastard@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 09:35:08 by jbastard          #+#    #+#             */
-/*   Updated: 2025/03/31 11:42:32 by jbastard         ###   ########.fr       */
+/*   Updated: 2025/04/02 12:08:32 by jbastard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,6 @@
 # include <limits.h>
 
 	//ERROR
-# define ERR_ARGS_COUNT "Error: Wrong number of arguments"
-# define ERR_MALLOC "Error: Memory allocation failed"
 # define ERR_START_THREAD "Unable to create threads for philos"
 # define ERR_ARGS_TYPE "Error: Invalid arguments\n\
 Usage: ./philosophers number_of_philosophers \
@@ -32,7 +30,7 @@ time_to_die time_to_eat time_to_sleep \
 [number_of_times_each_philosopher_must_eat]"
 # define ERROR_INIT_PHILOS "Unable to load philos"
 
-//	PHILO ACTIONS
+	//PHILO ACTIONS
 # define ERR_MAX_INT "Values needs to be between INT_MAX & 1"
 # define PHILO_TAKING_FORK "\e[1;32mas taken a fork\033[0m"
 # define PHILO_EATING "\e[1;92mis eating\033[0m"
@@ -60,13 +58,12 @@ struct s_data {
 struct s_philo {
 	int				id;
 	pthread_t		thread_id;
-	pthread_t		thread_mo_id;
+	long			start_time;
 	int				meals_nb;
 	long int		meal_l;
 	pthread_mutex_t	l_fork;
 	pthread_mutex_t	*r_fork;
 	t_data			*data;
-	long		start_time;
 };
 
 struct s_dp {
@@ -81,18 +78,13 @@ void		*routine(void *arg);
 int			init_data(t_dp *data, char **av);
 int			init_philosophers(t_dp *data);
 	//MONITOR.C
-void		*monitor_routine(void *arg);
-// PHILOS ACTIONS.C
+void		*global_monitor(void *arg);
+	// PHILOS ACTIONS.C
 int			philo_think(t_philo	*philo);
 int 		philo_take_forks(t_philo *philo);
 int			philo_eat(t_philo *philo);
 int 		philo_release_forks(t_philo *philo);
 int 		philo_sleep(t_philo	*philo);
-
-int 	check_meals(t_philo *philo);
-void	free_philosophers(t_dp *dp);
-void	*global_monitor(void *arg);
-int		ft_strncmp(const char	*s1, const char	*s2, size_t	n);
 
 //UTILS
 	//LIBFT_UTILS.C
@@ -100,13 +92,14 @@ int			is_digit(int c);
 int 		ft_atoi(const char *str);
 long long 	ft_atol(const char *str);
 int			is_numeric_args(char **av);
+int			ft_strncmp(const char	*s1, const char	*s2, size_t	n);
 	//UTILS.C
-long int	elapsed_time(t_data *data);
 long int	get_time_in_ms(void);
-void		wait_philosophers(t_dp *dp);
 void		print_status(t_philo *philo, char *status);
 void		ft_usleep(long int time_in_ms, t_data *data);
-
-//ALL_KINDS_OF_FREE
+	//MONITOR_MANAGER.C
+void		free_philosophers(t_dp *dp);
+void		wait_philosophers(t_dp *dp);
+int			start_threads(t_dp	*dp);
 
 #endif
