@@ -10,17 +10,17 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../../includes/philosophers.h"
+#include "../../includes/philosophers.h"
 
-int is_digit(int c)
+int	is_digit(int c)
 {
 	return (c >= '0' && c <= '9');
 }
 
-int is_numeric_args(char **av)
+int	is_numeric_args(char **av)
 {
-	int i;
-	int j;
+	int	i;
+	int	j;
 
 	i = 0;
 	while (av[i])
@@ -34,11 +34,11 @@ int is_numeric_args(char **av)
 	return (1);
 }
 
-int ft_atoi(const char *str)
+int	ft_atoi(const char *str)
 {
-	int res;
-	int i;
-	int sign;
+	int	res;
+	int	i;
+	int	sign;
 
 	i = 0;
 	sign = 1;
@@ -56,11 +56,11 @@ int ft_atoi(const char *str)
 	return (res * sign);
 }
 
-long long ft_atol(const char *str)
+long long	ft_atol(const char *str)
 {
-	int res;
-	int i;
-	int sign;
+	int	res;
+	int	i;
+	int	sign;
 
 	i = 0;
 	sign = 1;

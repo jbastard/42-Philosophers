@@ -12,13 +12,13 @@
 
 #include "../../includes/philosophers.h"
 
-int		philo_think(t_philo	*philo)
+int	philo_think(t_philo	*philo)
 {
 	print_status(philo, PHILO_THINKING);
 	return (1);
 }
 
-int philo_take_forks(t_philo *philo)
+int	philo_take_forks(t_philo *philo)
 {
 	if (philo->data->stop)
 		return (0);
@@ -45,7 +45,7 @@ int philo_take_forks(t_philo *philo)
 	return (1);
 }
 
-int		philo_eat(t_philo *philo)
+int	philo_eat(t_philo *philo)
 {
 	print_status(philo, PHILO_EATING);
 	philo->meals_nb++;
@@ -60,7 +60,7 @@ int		philo_eat(t_philo *philo)
 	return (1);
 }
 
-int 	philo_release_forks(t_philo *philo)
+int	philo_release_forks(t_philo *philo)
 {
 	pthread_mutex_unlock(philo->r_fork);
 	pthread_mutex_unlock(&philo->l_fork);
@@ -68,7 +68,7 @@ int 	philo_release_forks(t_philo *philo)
 	return (1);
 }
 
-int 	philo_sleep(t_philo	*philo)
+int	philo_sleep(t_philo	*philo)
 {
 	print_status(philo, PHILO_SLEEPING);
 	ft_usleep(philo->data->sleep_t, philo->data);

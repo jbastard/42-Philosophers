@@ -6,7 +6,7 @@
 /*   By: jbastard <jbastard@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/28 15:52:15 by jbastard          #+#    #+#             */
-/*   Updated: 2025/03/29 15:36:55 by jbastard         ###   ########.fr       */
+/*   Updated: 2025/04/02 12:15:20 by jbastard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,11 @@
 
 void	*global_monitor(void *arg)
 {
-	t_dp	*dp = (t_dp *)arg;
+	t_dp	*dp;
 	int		i;
 	long	time;
 
+	dp = (t_dp *)arg;
 	while (!dp->dt.stop)
 	{
 		i = 0;

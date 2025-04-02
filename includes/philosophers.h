@@ -37,25 +37,27 @@ time_to_die time_to_eat time_to_sleep \
 # define PHILO_THINKING "\e[1;97mis thinking\033[0m"
 # define PHILO_SLEEPING "\e[1;94mis sleeping\033[0m"
 # define PHILO_DIE "\e[1;91mdied\033[0m"
-# define PHILO_FULL "\e[1;93mAll philosophers have completed their meals.\033[0m"
+# define PHILO_FULL "\e[1;93mPhilosophers have completed their meals.\033[0m"
 
 typedef struct s_data	t_data;
 typedef struct s_philo	t_philo;
 typedef struct s_dp		t_dp;
 
-struct s_data {
+struct s_data
+{
 	int				philo_count;
-	long int				sleep_t;
-	long int				die_t;
-	long int				eat_t;
+	long int		sleep_t;
+	long int		die_t;
+	long int		eat_t;
 	int				m_count;
-	long int 		start_t;
+	long int		start_t;
 	pthread_mutex_t	write_mutex;
-	int 			nb_of_meals;
+	int				nb_of_meals;
 	int				stop;
 };
 
-struct s_philo {
+struct s_philo
+{
 	int				id;
 	pthread_t		thread_id;
 	long			start_time;
@@ -66,7 +68,8 @@ struct s_philo {
 	t_data			*data;
 };
 
-struct s_dp {
+struct s_dp
+{
 	t_philo			*ph;
 	t_data			dt;
 };
@@ -81,16 +84,16 @@ int			init_philosophers(t_dp *data);
 void		*global_monitor(void *arg);
 	// PHILOS ACTIONS.C
 int			philo_think(t_philo	*philo);
-int 		philo_take_forks(t_philo *philo);
+int			philo_take_forks(t_philo *philo);
 int			philo_eat(t_philo *philo);
-int 		philo_release_forks(t_philo *philo);
-int 		philo_sleep(t_philo	*philo);
+int			philo_release_forks(t_philo *philo);
+int			philo_sleep(t_philo	*philo);
 
 //UTILS
 	//LIBFT_UTILS.C
 int			is_digit(int c);
-int 		ft_atoi(const char *str);
-long long 	ft_atol(const char *str);
+int			ft_atoi(const char *str);
+long long	ft_atol(const char *str);
 int			is_numeric_args(char **av);
 int			ft_strncmp(const char	*s1, const char	*s2, size_t	n);
 	//UTILS.C

@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../../includes/philosophers.h"
+#include "../../includes/philosophers.h"
 
 int	init_data(t_dp *dp, char **av)
 {
@@ -41,10 +41,10 @@ int	init_data(t_dp *dp, char **av)
 
 int	init_philosophers(t_dp *dp)
 {
-	int i;
+	int	i;
 
 	i = 0;
-	dp->ph= malloc(sizeof(t_philo) * dp->dt.philo_count);
+	dp->ph = malloc(sizeof(t_philo) * dp->dt.philo_count);
 	while (i < dp->dt.philo_count)
 	{
 		dp->ph[i].id = i;

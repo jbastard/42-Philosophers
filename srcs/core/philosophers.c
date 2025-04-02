@@ -10,12 +10,13 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../../includes/philosophers.h"
+#include "../../includes/philosophers.h"
 
 void	*routine(void *arg)
 {
-	t_philo *philo = (t_philo *)arg;
+	t_philo	*philo;
 
+	philo = (t_philo *)arg;
 	philo->meal_l = philo->data->start_t;
 	if (philo->id % 2)
 		usleep(100);
@@ -37,7 +38,7 @@ void	*routine(void *arg)
 
 int	main(int ac, char **av)
 {
-	t_dp	dp;
+	t_dp		dp;
 	pthread_t	monitor;
 
 	if ((ac != 5 && ac != 6) || !is_numeric_args(av + 1))

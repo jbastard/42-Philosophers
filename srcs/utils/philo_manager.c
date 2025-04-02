@@ -12,7 +12,7 @@
 
 #include "../../includes/philosophers.h"
 
-int 	start_threads(t_dp	*dp)
+int	start_threads(t_dp	*dp)
 {
 	int	i;
 

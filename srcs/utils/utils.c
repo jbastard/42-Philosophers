@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../../includes/philosophers.h"
+#include "../../includes/philosophers.h"
 
 void	ft_usleep(long int time, t_data *data)
 {
@@ -30,9 +30,9 @@ void	ft_usleep(long int time, t_data *data)
 	}
 }
 
-long int get_time_in_ms(void)
+long int	get_time_in_ms(void)
 {
-	struct timeval tv;
+	struct timeval	tv;
 
 	gettimeofday(&tv, NULL);
 	return (tv.tv_sec * 1000 + tv.tv_usec / 1000);
