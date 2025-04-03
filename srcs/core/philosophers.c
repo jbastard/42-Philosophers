@@ -32,7 +32,6 @@ void	*routine(void *arg)
 		if (!philo_sleep(philo))
 			break ;
 	}
-	//philo_release_forks(philo);
 	return (NULL);
 }
 
