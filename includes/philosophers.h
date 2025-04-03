@@ -6,7 +6,7 @@
 /*   By: jbastard <jbastard@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 09:35:08 by jbastard          #+#    #+#             */
-/*   Updated: 2025/04/02 12:08:32 by jbastard         ###   ########.fr       */
+/*   Updated: 2025/04/03 10:35:01 by jbastard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,15 +29,15 @@ Usage: ./philosophers number_of_philosophers \
 time_to_die time_to_eat time_to_sleep \
 [number_of_times_each_philosopher_must_eat]"
 # define ERROR_INIT_PHILOS "Unable to load philos"
+# define ERR_MAX_INT "Values needs to be between INT_MAX & 1"
 
 	//PHILO ACTIONS
-# define ERR_MAX_INT "Values needs to be between INT_MAX & 1"
-# define PHILO_TAKING_FORK "\e[1;32mas taken a fork\033[0m"
-# define PHILO_EATING "\e[1;92mis eating\033[0m"
-# define PHILO_THINKING "\e[1;97mis thinking\033[0m"
-# define PHILO_SLEEPING "\e[1;94mis sleeping\033[0m"
-# define PHILO_DIE "\e[1;91mdied\033[0m"
-# define PHILO_FULL "\e[1;93mPhilosophers have completed their meals.\033[0m"
+# define PHILO_TAKING_FORK "as taken a fork"
+# define PHILO_EATING "is eating"
+# define PHILO_THINKING "is thinking"
+# define PHILO_SLEEPING "is sleeping"
+# define PHILO_DIE "died"
+# define PHILO_FULL "Philosophers have completed their meals"
 
 typedef struct s_data	t_data;
 typedef struct s_philo	t_philo;
@@ -51,6 +51,8 @@ struct s_data
 	long int		eat_t;
 	int				m_count;
 	long int		start_t;
+	pthread_mutex_t running_mutex;
+	pthread_mutex_t	meal_l_mutex;
 	pthread_mutex_t	write_mutex;
 	int				nb_of_meals;
 	int				stop;
@@ -73,6 +75,15 @@ struct s_dp
 	t_philo			*ph;
 	t_data			dt;
 };
+
+int			is_running(t_data *data);
+void		set_running(t_data *data, int status);
+long int	get_meal_l(t_philo *philo);
+void		set_meal_l(t_philo *philo, long int value);
+void		set_meal_nb(t_philo *philo, int value);
+int			get_meal_nb(t_philo *philo);
+int			get_nb_of_meals(t_data *data);
+void		set_nb_of_meals(t_data *data, int value);
 
 //CORE
 	//PHILOSOPHERS.C

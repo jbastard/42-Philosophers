@@ -6,7 +6,7 @@
 /*   By: jbastard <jbastard@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 12:46:06 by jbastard          #+#    #+#             */
-/*   Updated: 2025/04/02 09:50:05 by jbastard         ###   ########.fr       */
+/*   Updated: 2025/04/03 12:56:16 by jbastard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,10 @@ void	*routine(void *arg)
 	t_philo	*philo;
 
 	philo = (t_philo *)arg;
-	philo->meal_l = philo->data->start_t;
+	set_meal_l(philo, philo->data->start_t);
 	if (philo->id % 2)
-		usleep(100);
-	while (!philo->data->stop)
+		usleep(50);
+	while (!is_running(philo->data))
 	{
 		if (!philo_think(philo))
 			break ;
@@ -32,7 +32,7 @@ void	*routine(void *arg)
 		if (!philo_sleep(philo))
 			break ;
 	}
-	philo_release_forks(philo);
+	//philo_release_forks(philo);
 	return (NULL);
 }
 

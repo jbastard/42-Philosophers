@@ -35,6 +35,8 @@ int	init_data(t_dp *dp, char **av)
 	data.nb_of_meals = 0;
 	data.stop = 0;
 	pthread_mutex_init(&data.write_mutex, NULL);
+	pthread_mutex_init(&data.running_mutex, NULL);
+	pthread_mutex_init(&data.meal_l_mutex, NULL);
 	dp->dt = data;
 	return (1);
 }
