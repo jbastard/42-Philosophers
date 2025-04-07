@@ -6,7 +6,7 @@
 /*   By: jbastard <jbastard@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 09:35:08 by jbastard          #+#    #+#             */
-/*   Updated: 2025/04/03 10:35:01 by jbastard         ###   ########.fr       */
+/*   Updated: 2025/04/07 12:14:10 by jbastard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ struct s_data
 	long int		eat_t;
 	int				m_count;
 	long int		start_t;
-	pthread_mutex_t running_mutex;
+	pthread_mutex_t	running_mutex;
 	pthread_mutex_t	meal_l_mutex;
 	pthread_mutex_t	write_mutex;
 	int				nb_of_meals;
@@ -76,15 +76,6 @@ struct s_dp
 	t_data			dt;
 };
 
-int			is_running(t_data *data);
-void		set_running(t_data *data, int status);
-long int	get_meal_l(t_philo *philo);
-void		set_meal_l(t_philo *philo, long int value);
-void		set_meal_nb(t_philo *philo, int value);
-int			get_meal_nb(t_philo *philo);
-int			get_nb_of_meals(t_data *data);
-void		set_nb_of_meals(t_data *data, int value);
-
 //CORE
 	//PHILOSOPHERS.C
 void		*routine(void *arg);
@@ -101,6 +92,16 @@ int			philo_release_forks(t_philo *philo);
 int			philo_sleep(t_philo	*philo);
 
 //UTILS
+	//GETER.C
+int			get_meal_nb(t_philo *philo);
+int			get_nb_of_meals(t_data *data);
+long int	get_meal_l(t_philo *philo);
+int			is_running(t_data *data);
+	//SETER.C
+void		set_running(t_data *data, int status);
+void		set_meal_l(t_philo *philo, long int value);
+void		set_meal_nb(t_philo *philo, int value);
+void		set_nb_of_meals(t_data *data, int value);
 	//LIBFT_UTILS.C
 int			is_digit(int c);
 int			ft_atoi(const char *str);

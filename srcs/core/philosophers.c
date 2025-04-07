@@ -6,7 +6,7 @@
 /*   By: jbastard <jbastard@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 12:46:06 by jbastard          #+#    #+#             */
-/*   Updated: 2025/04/03 12:56:16 by jbastard         ###   ########.fr       */
+/*   Updated: 2025/04/07 12:07:02 by jbastard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ void	*routine(void *arg)
 	{
 		if (!philo_think(philo))
 			break ;
+		usleep(50);
 		if (!philo_take_forks(philo))
 			break ;
 		if (!philo_eat(philo))

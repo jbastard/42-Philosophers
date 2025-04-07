@@ -27,6 +27,8 @@ C_FILES			=	$(CORE_DIR)philosophers.c \
 					$(UTILS_DIR)philo_manager.c \
 					$(UTILS_DIR)libft_utils.c \
 					$(UTILS_DIR)utils.c \
+					$(UTILS_DIR)seter.c \
+					$(UTILS_DIR)geter.c \
 
 SRC				=	$(addprefix $(SRC_DIR), $(C_FILES))
 OBJS			=	$(patsubst $(SRC_DIR)%.c, $(OBJS_DIR)%.o, $(SRC))
